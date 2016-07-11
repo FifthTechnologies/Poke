@@ -24,7 +24,7 @@ var data = {
 var PokeAdvocate = Parse.Object.extend("Advocates");
 var pokeAdvocate = new PokeAdvocate();
 
-var downloadRadio, usernameRadio;
+var downloadRadio, usernameRadio, emailBox;
 
 //Check if the checkboxes are checked
 var checkDownloadOptions = function () {
@@ -36,8 +36,6 @@ var checkDownloadOptions = function () {
         snackbarContainer.MaterialSnackbar.showSnackbar(data);
     }
     else {
-        data.message = "download: " + /*mForm.elements["download_options"]*/downloadRadio.value;
-        snackbarContainer.MaterialSnackbar.showSnackbar(data);
         checkUsernameOptions();
     }
 };
@@ -51,21 +49,15 @@ var checkUsernameOptions = function () {
         snackbarContainer.MaterialSnackbar.showSnackbar(data);
     }
     else {
-        data.message = "username: " + usernameRadio.value;
-        snackbarContainer.MaterialSnackbar.showSnackbar(data);
         checkEmail();
     }
 };
 
 var checkEmail = function () {
-    var emailBox = document.getElementById("email");
+    emailBox = document.getElementById("email");
 
     if (emailBox.value !== "") {
-        data.message = "Email is not empty, we will check to see if it is valid";
-        snackbarContainer.MaterialSnackbar.showSnackbar(data);
         if (correctEmail(emailBox.value)) {
-            data.message = "Email is good";
-            snackbarContainer.MaterialSnackbar.showSnackbar(data);
             pokeAdvocate.save(
                 {
                     willDownload: downloadRadio.value,
@@ -73,12 +65,14 @@ var checkEmail = function () {
                     usePokeFor: document.getElementById("poke_usage").value,
                     email: emailBox.value
                 })
-                .then(function(object) {
-                    alert("Submitted Successfully!");
+                .then(function (object) {
+                    data.message = "Thanks for your response, it has been submitted successfully!";
+                    data.timeout = 400;
+                    snackbarContainer.MaterialSnackbar.showSnackbar(data);
                 });
         }
         else {
-            data.message = "Email is bad";
+            data.message = "Please input a valid email address";
             snackbarContainer.MaterialSnackbar.showSnackbar(data);
         }
     }
@@ -90,15 +84,17 @@ var checkEmail = function () {
                 usePokeFor: document.getElementById("poke_usage").value,
                 email: null
             })
-            .then(function(object) {
-            alert("Submitted Successfully!");
-        });
+            .then(function (object) {
+                data.message = "Thanks for your response, it has been submitted successfully!";
+                data.timeout = 400;
+                snackbarContainer.MaterialSnackbar.showSnackbar(data);
+            });
     }
 };
 
 var correctEmail = function (email) {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
-}
+};
 
 mSubmitButton.onclick = checkDownloadOptions;
