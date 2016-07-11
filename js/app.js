@@ -67,7 +67,7 @@ var checkEmail = function () {
                 })
                 .then(function (object) {
                     data.message = "Thanks for your response, it has been submitted successfully!";
-                    data.timeout = 400;
+                    data.timeout = 4000;
                     snackbarContainer.MaterialSnackbar.showSnackbar(data);
                 });
         }
@@ -86,7 +86,7 @@ var checkEmail = function () {
             })
             .then(function (object) {
                 data.message = "Thanks for your response, it has been submitted successfully!";
-                data.timeout = 400;
+                data.timeout = 4000;
                 snackbarContainer.MaterialSnackbar.showSnackbar(data);
             });
     }
